@@ -20,13 +20,15 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-	  pip install --upgrade tensorflow keras
+          pip install --upgrade tensorflow keras
           pip install --no-deps --no-cache-dir -r requirements.txt  # Install project dependencies
 
       - name: Install Azure CLI
   	uses: azure/setup-azure-cli@v1
 
       - name: Execute data scraping script
+	env:
+          DATA_FOLDER: ${{ github.workspace }}/src/data
         run: python /Users/srishtipandey/Desktop/StockPricePrediction/src/data_scraping.py
 
       - name: Upload data to Azure Blob Storage
