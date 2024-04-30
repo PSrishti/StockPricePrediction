@@ -2,7 +2,12 @@ name: Weekly Data Scraping and Storage
 
 on:
   schedule:
-    - cron: "0 0 * * 0"  # Run every Sunday at midnight UTC (adjust as needed)
+    - cron: "0 0 * * 0"  # Run every Sunday at midnight UTC
+  workflow_dispatch:  # Enable manual triggering
+    inputs:
+      message:
+        description: 'Run on demand'
+        required: false
 
 jobs:
   scrape_and_store_data:
