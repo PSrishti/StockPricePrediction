@@ -1,4 +1,3 @@
-
 name: Weekly Data Scraping and Storage
 
 on:
@@ -43,7 +42,7 @@ jobs:
         run: |
           az storage blob upload \
             --container-name stock-prediction-data \
-            --file /src/data/StockPriceDataWebScraped.parquet \
+            --file src/data/StockPriceDataWebScraped.parquet  # Corrected file path
             --name StockPriceData.parquet \
             --overwrite
 
