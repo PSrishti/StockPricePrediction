@@ -1,3 +1,4 @@
+
 name: Weekly Data Scraping and Storage
 
 on:
@@ -45,3 +46,4 @@ jobs:
             --file /src/data/StockPriceDataWebScraped.parquet \
             --name StockPriceData.parquet \
             --overwrite
+
