@@ -15,7 +15,7 @@ jobs:
       - name: Download file from Azure Blob Storage
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
 
       - name: Install Azure CLI
         uses: azure/CLI@v1
@@ -51,7 +51,7 @@ jobs:
       - name: Upload trained models to Azure Blob Storage
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
         run: |
           az storage blob upload \
             --container-name stock-price-models \
