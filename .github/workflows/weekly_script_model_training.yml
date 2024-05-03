@@ -48,10 +48,12 @@ jobs:
           DATA_FOLDER: ${{ github.workspace }}/src/data
         run: python src/model_training.py
 
-      - name: Upload trained models to Azure Blob Storage
+      - name: Log in to Azure
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+
+      - name: Upload trained models to Azure Blob Storage
         run: |
           az storage blob upload \
             --container-name stock-price-models \
