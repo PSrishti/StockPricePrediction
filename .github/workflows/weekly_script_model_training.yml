@@ -62,6 +62,6 @@ jobs:
         run: |
           az storage blob upload \
             --container-name stock-price-models \
-            --file src/models \
+            --file src/models/* \
             --name trained_models \
             --overwrite
