@@ -3,6 +3,11 @@ name: Model Training and Azure Storage
 on:
   schedule:
     - cron: "0 2 * * 0"  # Run every Sunday at 2:00 AM UTC
+  workflow_dispatch:  # Enable manual triggering
+    inputs:
+      message:
+        description: 'Manual triggered run'
+        required: false    
 
 jobs:
   train_model_and_upload:
@@ -30,7 +35,7 @@ jobs:
       - name: Move file to data folder
         run: |
           mkdir -p /src/data
-          mv input-file.parquet /src/data/
+          mv StockPriceDataWebScraped.parquet src/data/
 
       - name: Set up Python
         uses: actions/setup-python@v2
