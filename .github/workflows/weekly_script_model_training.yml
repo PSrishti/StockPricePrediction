@@ -65,4 +65,3 @@ jobs:
             --file src/models \
             --name trained_models \
             --overwrite
-
