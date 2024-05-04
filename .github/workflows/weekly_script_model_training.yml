@@ -1,0 +1,63 @@
+name: Model Training and Azure Storage
+
+on:
+  schedule:
+    - cron: "0 2 * * 0"  # Run every Sunday at 2:00 AM UTC
+
+jobs:
+  train_model_and_upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Download file from Azure Blob Storage
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+
+      - name: Install Azure CLI
+        uses: azure/CLI@v1
+
+      - name: Fetch file from Azure Blob Storage
+        run: |
+          az storage blob download \
+            --container-name stock-prediction-data \
+            --name StockPriceData.parquet \
+            --file StockPriceDataWebScraped.parquet
+
+      - name: Move file to data folder
+        run: |
+          mkdir -p /src/data
+          mv input-file.parquet /src/data/
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10.11'  # Specify the Python version
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade tensorflow keras
+          pip install --upgrade pandas scikit-learn
+
+      - name: Execute Python script
+        env:
+          DATA_FOLDER: ${{ github.workspace }}/src/data
+        run: python src/model_training.py
+
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+
+      - name: Upload trained models to Azure Blob Storage
+        run: |
+          az storage blob upload \
+            --container-name stock-price-models \
+            --file src/models \
+            --name trained_models \
+            --overwrite
+
