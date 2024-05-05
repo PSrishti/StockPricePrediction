@@ -16,9 +16,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-  
+
       - name: Install Azure CLI
         uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            # Your Azure CLI commands go here
+            az --version
 
       - name: Download file from Azure Blob Storage
         run: |
