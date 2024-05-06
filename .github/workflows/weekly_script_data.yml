@@ -13,6 +13,9 @@ jobs:
   scrape_and_store_data:
     runs-on: ubuntu-latest
 
+    container:
+      image: nvidia/cuda:11.0-base-ubuntu20.04  # Use a Docker image with CUDA support
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -21,21 +24,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.10.11'  # Specify the Python version
-
-      - name: Install CUDA Toolkit
-        run: |
-          wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin
-          sudo mv cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-600
-          sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub
-          sudo add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/ /"
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends cuda-toolkit-11-4
-
-      - name: Set CUDA Environment Variables
-        run: |
-          echo 'export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}' >> $HOME/.bashrc
-          echo 'export LD_LIBRARY_PATH=/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}' >> $HOME/.bashrc
-          source $HOME/.bashrc
 
       - name: Install dependencies
         run: |
