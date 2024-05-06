@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: nvidia/cuda:11.0-base-ubuntu20.04  # Use a Docker image with CUDA support
+      image: nvidia/cuda:12.4.1-base-ubuntu20.04  # Use a Docker image with CUDA support
 
     steps:
       - name: Checkout repository
