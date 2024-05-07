@@ -29,8 +29,11 @@ jobs:
       - name: Install SWIG
         run: apt-get update && apt-get install -y swig
 
+      - name: Install CMake
+        run: apt-get update && apt-get install -y cmake
+
       - name: Install Python Development Headers
-        run: apt-get update && apt-get install -y python3-dev
+        run: apt-get update && apt-get install -y python3.10-dev 
 
       - name: Set up Python
         uses: actions/setup-python@v2
