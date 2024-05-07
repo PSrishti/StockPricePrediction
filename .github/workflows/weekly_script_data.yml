@@ -23,6 +23,15 @@ jobs:
       - name: Install Git
         run: apt-get update && apt-get install -y git
 
+      - name: Install Build Tools
+        run: apt-get update && apt-get install -y build-essential
+
+      - name: Install SWIG
+        run: apt-get update && apt-get install -y swig
+
+      - name: Install Python Development Headers
+        run: apt-get update && apt-get install -y python3-dev
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
