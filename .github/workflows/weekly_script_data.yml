@@ -12,7 +12,6 @@ on:
 jobs:
   scrape_and_store_data:
     runs-on: ubuntu-latest
-
     container:
       image: nvidia/cuda:12.4.1-base-ubuntu20.04  # Use a Docker image with CUDA support
 
@@ -21,19 +20,28 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install Git
-        run: apt-get update && apt-get install -y git
+        run: |
+          apt-get update && apt-get install -y git
 
       - name: Install Build Tools
-        run: apt-get update && apt-get install -y build-essential
+        run: |
+          apt-get update && apt-get install -y build-essential
 
       - name: Install SWIG
-        run: apt-get update && apt-get install -y swig
+        run: |
+          apt-get update && apt-get install -y swig
 
       - name: Install CMake
-        run: apt-get update && apt-get install -y cmake
+        run: |
+          apt-get update && apt-get install -y cmake --no-install-recommends
+          mkdir cmake-build && cd cmake-build
+          cmake --no-configuration..
+          make
+          make install
 
       - name: Install Python Development Headers
-        run: apt-get update && apt-get install -y python3.10-dev 
+        run: |
+          apt-get update && apt-get install -y python3.10-dev 
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -41,16 +49,18 @@ jobs:
           python-version: '3.10.11'  # Specify the Python version
 
       - name: Create Virtual Environment
-        run: python -m venv venv
+        run: |
+          python -m venv venv
 
       - name: Activate Virtual Environment
-        run: bash -c "source venv/bin/activate"
+        run: |
+          bash -c "source venv/bin/activate"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install --upgrade tensorflow keras --user
-          pip install --no-deps --no-cache-dir -r requirements.txt --user # Install project dependencies
+          pip install --no-deps --no-cache-dir -r requirements.txt --user  # Install project dependencies
 
       - name: Install Azure CLI
         uses: azure/CLI@v1
