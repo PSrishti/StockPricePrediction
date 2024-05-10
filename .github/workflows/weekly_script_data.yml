@@ -33,11 +33,8 @@ jobs:
 
       - name: Install CMake
         run: |
+          export DEBIAN_FRONTEND=noninteractive
           apt-get update && apt-get install -y cmake --no-install-recommends
-          mkdir cmake-build && cd cmake-build
-          cmake --no-configuration..
-          make
-          make install
 
       - name: Install Python Development Headers
         run: |
