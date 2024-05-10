@@ -38,7 +38,7 @@ jobs:
 
       - name: Install Python Development Headers
         run: |
-          apt-get update && apt-get install -y python3.10-dev 
+          apt-get update && apt-get install -y python-dev 
 
       - name: Set up Python
         uses: actions/setup-python@v2
