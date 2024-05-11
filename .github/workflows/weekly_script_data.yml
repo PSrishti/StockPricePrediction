@@ -22,10 +22,33 @@ jobs:
         with:
           python-version: '3.10.11'  # Specify the Python version
 
+      - name: Check GPU
+        run: lspci | grep -i nvidia
+      
+      - name: Check GCC Version
+        run: gcc --version
+      
+      - name: Download NVIDIA CUDA Repository Key
+        run: |
+          curl -O https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub
+          sudo mv 7fa2af80.pub /usr/share/keyrings/
+      
+      - name: Add CUDA Repository
+        run: |
+          echo "deb [signed-by=/usr/share/keyrings/7fa2af80.pub] https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64 /" | sudo tee /etc/apt/sources.list.d/cuda.list
+          sudo apt-get update
+      
+      - name: Verify CUDA Availability
+        run: sudo apt-cache policy cuda
+      
+      - name: Install CUDA Toolkit
+        run: sudo apt-get install -y cuda
+      
+      - name: Verify CUDA Installation
+        run: nvcc --version  # Check CUDA compiler version
+
       - name: Add NVIDIA CUDA repository key
         run: |
-          lspci | grep -i nvidia
-          gcc --version
           curl -O https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub
           sudo mv 7fa2af80.pub /usr/share/keyrings/
 
