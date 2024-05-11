@@ -24,6 +24,8 @@ jobs:
 
       - name: Add NVIDIA CUDA repository key
         run: |
+          lspci | grep -i nvidia
+          gcc --version
           curl -O https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub
           sudo mv 7fa2af80.pub /usr/share/keyrings/
 
