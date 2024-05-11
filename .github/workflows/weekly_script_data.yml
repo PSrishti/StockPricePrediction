@@ -24,7 +24,16 @@ jobs:
 
       - name: Install CUDA Toolkit
         run: |
+          # Add the NVIDIA CUDA repository key
+          sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub
+          
+          # Add the NVIDIA CUDA repository to the package sources
+          sudo sh -c 'echo "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64 /" > /etc/apt/sources.list.d/cuda.list'
+          
+          # Update the package lists
           sudo apt-get update
+          
+          # Install CUDA Toolkit
           sudo apt-get install -y cuda
 
       - name: Install System Dependencies
