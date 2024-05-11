@@ -22,18 +22,15 @@ jobs:
         with:
           python-version: '3.10.11'  # Specify the Python version
 
+      - name: Add NVIDIA CUDA repository key
+        run: |
+          curl -O https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub
+          sudo mv 7fa2af80.pub /usr/share/keyrings/
+          echo "deb [signed-by=/usr/share/keyrings/7fa2af80.pub] https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64 /" | sudo tee /etc/apt/sources.list.d/cuda.list
+          sudo apt-get update
+
       - name: Install CUDA Toolkit
         run: |
-          # Add the NVIDIA CUDA repository key
-          sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub
-          
-          # Add the NVIDIA CUDA repository to the package sources
-          sudo sh -c 'echo "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64 /" > /etc/apt/sources.list.d/cuda.list'
-          
-          # Update the package lists
-          sudo apt-get update
-          
-          # Install CUDA Toolkit
           sudo apt-get install -y cuda
 
       - name: Install System Dependencies
