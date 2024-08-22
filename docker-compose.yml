@@ -1,0 +1,1 @@
+version: '3.8'services:  stock-prediction-app:    build: .    volumes:      - /Users/srishtipandey/Desktop/StockPricePrediction/src/models:/app/src/models  # Mount local models directory to container    ports:      - "8000:8000"  # Map host port 8000 to container port 8000    environment:      - MODEL_DIR=/app/src/models  # Pass model directory as environment variable
