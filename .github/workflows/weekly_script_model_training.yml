@@ -7,7 +7,7 @@ on:
     inputs:
       message:
         description: 'Manual triggered run'
-        required: false    
+        required: false
 
 jobs:
   train_model_and_upload:
@@ -15,26 +15,26 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Download file from Azure Blob Storage
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+        uses: actions/checkout@v3
 
       - name: Install Azure CLI
         uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            # Your Azure CLI commands go here
+            az --version
 
-      - name: Fetch file from Azure Blob Storage
+      - name: Download file from Azure Blob Storage
         run: |
           az storage blob download \
+            --connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
             --container-name stock-prediction-data \
             --name StockPriceData.parquet \
             --file StockPriceDataWebScraped.parquet
 
       - name: Move file to data folder
         run: |
-          mkdir -p /src/data
+          mkdir -p src/data
           mv StockPriceDataWebScraped.parquet src/data/
 
       - name: Set up Python
@@ -53,14 +53,10 @@ jobs:
           DATA_FOLDER: ${{ github.workspace }}/src/data
         run: python src/model_training.py
 
-      - name: Log in to Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-
       - name: Upload trained models to Azure Blob Storage
         run: |
           az storage blob upload \
+            --connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
             --container-name stock-price-models \
             --file src/models/* \
             --name trained_models \

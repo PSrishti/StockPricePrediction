@@ -6,7 +6,7 @@ on:
   workflow_dispatch:  # Enable manual triggering
     inputs:
       message:
-        description: 'Run on demand'
+        description: 'Run on manual triggering'
         required: false
 
 jobs:
@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -29,18 +29,21 @@ jobs:
           pip install --no-deps --no-cache-dir -r requirements.txt  # Install project dependencies
 
       - name: Install Azure CLI
-        uses: azure/setup-azure-cli@v1
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            # Your Azure CLI commands go here
+            az --version
 
       - name: Execute data scraping script
         env:
           DATA_FOLDER: ${{ github.workspace }}/src/data
-        run: python /Users/srishtipandey/Desktop/StockPricePrediction/src/data_scraping.py
+        run: python src/data_scraping.py
 
       - name: Upload data to Azure Blob Storage
-        env:
-          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
         run: |
           az storage blob upload \
+            --connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
             --container-name stock-prediction-data \
             --file src/data/StockPriceDataWebScraped.parquet  # Corrected file path
             --name StockPriceData.parquet \

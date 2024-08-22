@@ -1,0 +1,50 @@
+Installing Finrl package
+Note : This works only for python version >= 3.10 and < 3.11. Since I am using python 3.11.5, I created a virtual environment to make it work in my IDE without actually changing its current version, which is compatible for my most of the other projects.
+1.  git clone https://github.com/AI4Finance-LLC/FinRL-Library.git
+2.  cd FinRL-Library
+3.  conda create --name myenv python=3.10.11
+4. conda activate myenv
+5. pip install -—upgrade pip
+   pip install --upgrade setuptools
+6. xcode-select --install
+7. brew update
+   brew upgrade
+8. cd finrl
+9. pip install -r requirements.txt
+10. pip install .
+11. If this error - “        ERROR: Failed building wheel for qdldl
+      Failed to build qdldl
+      ERROR: Could not build wheels for qdldl, which is required to install pyproject.toml-based projects
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+”
+Then do - 1. git clone https://github.com/oxfordcontrol/qdldl.git   
+             cd ldldl  
+          2. conda install -c conda-forge cmake
+          3. mkdir build
+             cd build
+             cmake ..
+             cmake --build 
+          4. sudo make install
+12. Go back to finrl folder using cd .. ; cd ..
+13. pip install osqp==0.6.2
+14. pip install .
+15. After completion, 
+    python
+Python 3.10.11 (main, May 17 2023, 14:30:36) [Clang 14.0.6 ] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import finrl
+If completes successfully, finrl is successfully installed.
+16. To use this, we need to work on spider in virtual environment. To do that - 
+    1. conda install spyder-kernels
+    2. python -c "import sys; print(sys.executable)"
+    3. Copy the output of the above command. Launch Spyder. Go to preferences >> Python Interpreter >> Use this python interpreter. Paste the output of above command and click Apply. Open a new console and everything in the virtual environment can be used there. 
+17. If any new package is needed to be installed for this project, it would be needed to be installed in this virtual environment only. Do “conda activate myenv” in the terminal to activate this virtual environment, “conda deactivate” to go back to base environment. 
+
+
+—- pip install tensor flow
+—- pip install keras
+—- pip install nltk
+-- pip install fastapi uvicorn
